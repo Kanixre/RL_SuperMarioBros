@@ -21,6 +21,8 @@
 # Contact: hcuayahuitl@lincoln.ac.uk
 #####################################################
 
+# python sb-SuperMarioBros.py train
+
 import sys
 import gym
 import pickle
