@@ -27,6 +27,7 @@ import sys
 import gym
 import pickle
 import random
+import numpy as np
 from typing import Callable
 from stable_baselines3 import DQN,A2C,PPO
 from stable_baselines3.common.evaluation import evaluate_policy
@@ -35,6 +36,7 @@ import gym_super_mario_bros
 from nes_py.wrappers import JoypadSpace
 from gym_super_mario_bros.actions import SIMPLE_MOVEMENT, COMPLEX_MOVEMENT, RIGHT_ONLY
 from stable_baselines3.common import atari_wrappers
+from gym.wrappers import AtariPreprocessing, FrameStack, TransformObservation
 
 
 if len(sys.argv)<2 or len(sys.argv)>4:
@@ -52,6 +54,17 @@ learning_rate = 0.00083 # Perfect for the training
 gamma = 0.995
 policy_rendering = True
 
+# Define a custom observation wrapper
+class BackgroundBlackWrapper(gym.ObservationWrapper):
+    def __init__(self, env):
+        super(BackgroundBlackWrapper, self).__init__(env)
+        self.observation_space = gym.spaces.Box(low=0, high=255, shape=(84, 84, 1), dtype=np.uint8)
+
+    def observation(self, observation):
+        # Set the background to black
+        observation = np.where(observation == 0, 0, observation)
+        return observation
+
 # create the learning environment 
 def make_env(gym_id, seed):
     env = gym_super_mario_bros.make(gym_id)
@@ -60,6 +73,8 @@ def make_env(gym_id, seed):
     env = atari_wrappers.MaxAndSkipEnv(env, 4)
     env = atari_wrappers.NoopResetEnv(env, noop_max=30)
     env = atari_wrappers.ClipRewardEnv(env)
+    env = TransformObservation(env, lambda obs: obs[:, :, 0])  # Convert RGB to grayscale
+    env = BackgroundBlackWrapper(env)  # Apply the custom observation wrapper
     env.seed(seed)	
     env.action_space.seed(seed)
     env.observation_space.seed(seed)
