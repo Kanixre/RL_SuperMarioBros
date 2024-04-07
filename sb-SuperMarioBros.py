@@ -64,18 +64,21 @@ def make_env(gym_id, seed):
     env = atari_wrappers.MaxAndSkipEnv(env, 4)
     env = atari_wrappers.NoopResetEnv(env, noop_max=30)
     env = atari_wrappers.ClipRewardEnv(env)
-
+    env = TransformObservation(env, lambda obs: obs[:, :, 0])  # Convert RGB to grayscale
+    # if results are worse than Prabath, use 
+    # env = atari_wrappers.WarpFrame(env) # Convert RGB to grayscale
+    
     # Define a custom observation wrapper
     class BackgroundBlackWrapper(gym.ObservationWrapper):
         def __init__(self, env):
             super(BackgroundBlackWrapper, self).__init__(env)
-            self.observation_space = gym.spaces.Box(low=0, high=255, shape=(84, 84, 1), dtype=np.uint8)
+            self.observation_space = gym.spaces.Box(low=0, high=255, shape=(84, 84, 1), dtype=env.observation_space.dtype)
     
         def observation(self, observation):
             # Set the background to black
             observation = np.where(observation == 0, 0, observation)
             return observation
-    env = TransformObservation(env, lambda obs: obs[:, :, 0])  # Convert RGB to grayscale
+    
     env = BackgroundBlackWrapper(env)  # Apply the custom observation wrapper
     env.seed(seed)	
     env.action_space.seed(seed)
