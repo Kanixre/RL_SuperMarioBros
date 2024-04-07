@@ -78,7 +78,7 @@ def make_env(gym_id, seed):
     
         def observation(self, observation):
             # Set the background to black
-            observation = np.where(observation == 0, 0, observation)
+            observation = np.where(observation == 0, 0, observation) # check this with code.
             return observation
     
     env = BackgroundBlackWrapper(env)  # Apply the custom observation wrapper
