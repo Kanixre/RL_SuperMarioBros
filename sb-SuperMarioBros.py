@@ -34,7 +34,8 @@ from stable_baselines3.common.evaluation import evaluate_policy
 
 import gym_super_mario_bros
 from nes_py.wrappers import JoypadSpace
-from gym_super_mario_bros.actions import SIMPLE_MOVEMENT, COMPLEX_MOVEMENT, RIGHT_ONLY
+from actions_custom import SIMPLE_MOVEMENT_CUSTOM # contains down in SIMPLE_MOVEMENT
+# from gym_super_mario_bros.actions import SIMPLE_MOVEMENT, COMPLEX_MOVEMENT, RIGHT_ONLY
 from stable_baselines3.common import atari_wrappers
 from gym.wrappers import AtariPreprocessing, FrameStack, TransformObservation
 
@@ -60,7 +61,8 @@ policy_rendering = True
 def make_env(gym_id, seed):
     env = gym_super_mario_bros.make(gym_id)
     # Movement types determines how mario moves which helps him beat levels better?
-    env = JoypadSpace(env, SIMPLE_MOVEMENT)
+    # env = JoypadSpace(env, SIMPLE_MOVEMENT)
+    env = JoypadSpace(env, SIMPLE_MOVEMENT_CUSTOM)
     env = atari_wrappers.MaxAndSkipEnv(env, 4)
     env = atari_wrappers.NoopResetEnv(env, noop_max=30)
     env = atari_wrappers.ClipRewardEnv(env)
