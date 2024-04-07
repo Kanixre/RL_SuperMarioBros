@@ -54,16 +54,7 @@ learning_rate = 0.00083 # Perfect for the training
 gamma = 0.995
 policy_rendering = True
 
-# Define a custom observation wrapper
-class BackgroundBlackWrapper(gym.ObservationWrapper):
-    def __init__(self, env):
-        super(BackgroundBlackWrapper, self).__init__(env)
-        self.observation_space = gym.spaces.Box(low=0, high=255, shape=(84, 84, 1), dtype=np.uint8)
 
-    def observation(self, observation):
-        # Set the background to black
-        observation = np.where(observation == 0, 0, observation)
-        return observation
 
 # create the learning environment 
 def make_env(gym_id, seed):
@@ -73,6 +64,17 @@ def make_env(gym_id, seed):
     env = atari_wrappers.MaxAndSkipEnv(env, 4)
     env = atari_wrappers.NoopResetEnv(env, noop_max=30)
     env = atari_wrappers.ClipRewardEnv(env)
+
+    # Define a custom observation wrapper
+    class BackgroundBlackWrapper(gym.ObservationWrapper):
+        def __init__(self, env):
+            super(BackgroundBlackWrapper, self).__init__(env)
+            self.observation_space = gym.spaces.Box(low=0, high=255, shape=(84, 84, 1), dtype=np.uint8)
+    
+        def observation(self, observation):
+            # Set the background to black
+            observation = np.where(observation == 0, 0, observation)
+            return observation
     env = TransformObservation(env, lambda obs: obs[:, :, 0])  # Convert RGB to grayscale
     env = BackgroundBlackWrapper(env)  # Apply the custom observation wrapper
     env.seed(seed)	
