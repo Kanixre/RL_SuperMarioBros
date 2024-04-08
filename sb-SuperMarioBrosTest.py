@@ -63,18 +63,18 @@ def make_env(gym_id, seed):
     env = JoypadSpace(env, SIMPLE_MOVEMENT)
     env = atari_wrappers.MaxAndSkipEnv(env, skip=3)
     env = atari_wrappers.WarpFrame(env)
+    
     env = atari_wrappers.NoopResetEnv(env, noop_max=30)
     env = atari_wrappers.ClipRewardEnv(env)
 
-    # Define the black observation wrapper
-    class BackgroundBlackWrapper(gym.ObservationWrapper):
+    class ColorWrapper(gym.ObservationWrapper):
         def _init_(self, env):
-            super(BackgroundBlackWrapper, self)._init_(env)
+            super(ColorWrapper, self)._init_(env)
             self.observation_space = gym.spaces.Box(low=0, high=255, shape=(84, 84, 1), dtype=env.observation_space.dtype)
 
-        def obs(self, obs):
-            obs[obs != 0] = 0
-            return obs
+        def observation(self, observation):
+            observation[observation != 0] = 0
+            return observation
 
     env.seed(seed)	
     env.action_space.seed(seed)
