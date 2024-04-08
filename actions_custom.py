@@ -24,14 +24,11 @@ SIMPLE_MOVEMENT = [
 
 # actions for very simple movement with 'down'
 SIMPLE_MOVEMENT_CUSTOM= [
-    ['NOOP'],
     ['right'],
     ['right', 'A'],
     ['right', 'B'],
     ['right', 'A', 'B'],
-    ['A'],
     ['left'],
-    ['down'],
 ]
 
 # actions for more complex movement
