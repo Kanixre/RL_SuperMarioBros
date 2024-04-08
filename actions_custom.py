@@ -22,8 +22,8 @@ SIMPLE_MOVEMENT = [
     ['left'],
 ]
 
-# actions for very simple movement with 'down'
-SIMPLE_MOVEMENT_CUSTOM= [
+# custom actions 
+SIMPLE_MOVEMENT_CUSTOM = [
     ['right'],
     ['right', 'A'],
     ['right', 'B'],
