@@ -44,6 +44,8 @@ if len(sys.argv)<2 or len(sys.argv)>4:
     exit(0)
 
 environmentID = "SuperMarioBros2-v1"
+
+# Things to study and toggle for better results -1
 trainMode = True if sys.argv[1] == 'train' else False
 learningAlg = sys.argv[2] 
 seed = random.randint(0,1000) if trainMode else int(sys.argv[3])
@@ -54,6 +56,7 @@ learning_rate = 0.00083 # Perfect for the training
 gamma = 0.995
 policy_rendering = True
 
+# Things to study and toggle for better results - 2
 # create the learning environment
 def make_env(gym_id, seed):
     env = gym_super_mario_bros.make(gym_id)
@@ -81,6 +84,7 @@ def make_env(gym_id, seed):
 environment = make_env(environmentID, seed)
 
 
+# Things to study and toggle for better results - 3
 # create the agent's model using one of the selected algorithms
 # note: exploration_fraction=0.9 means that it will explore 90% of the training steps
 if learningAlg == "DQN":
