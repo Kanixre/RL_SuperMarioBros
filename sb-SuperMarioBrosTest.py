@@ -54,39 +54,32 @@ learning_rate = 0.00083 # Perfect for the training
 gamma = 0.995
 policy_rendering = True
 
-
-# Define a custom observation wrapper    
-class BackgroundBlackWrapper(gym.ObservationWrapper):
-        def __init__(self, env):
-            super(BackgroundBlackWrapper, self).__init__(env)
-            self.observation_space = gym.spaces.Box(low=0, high=255, shape=(84, 84, 1), dtype=env.observation_space.dtype)
-    
-        def observation(self, observation):
-            # Set the background to black
-            observation = np.where(observation == 0, 0, observation)
-            return observation
-
-# create the learning environment 
+# create the learning environment
 def make_env(gym_id, seed):
     env = gym_super_mario_bros.make(gym_id)
-    # Movement types determines how mario moves which helps him beat levels better?
     env = JoypadSpace(env, SIMPLE_MOVEMENT)
-    env = atari_wrappers.MaxAndSkipEnv(env, 4)
+    env = atari_wrappers.MaxAndSkipEnv(env, skip=3)
+    env = atari_wrappers.WarpFrame(env)
     env = atari_wrappers.NoopResetEnv(env, noop_max=30)
     env = atari_wrappers.ClipRewardEnv(env)
-    env = CustomWarpFrame(env)  # Apply the custom observation wrapper
-    env.seed(seed)
+
+    # Define the black observation wrapper
+    class BackgroundBlackWrapper(gym.ObservationWrapper):
+        def _init_(self, env):
+            super(BackgroundBlackWrapper, self)._init_(env)
+            self.observation_space = gym.spaces.Box(low=0, high=255, shape=(84, 84, 1), dtype=env.observation_space.dtype)
+
+        def obs(self, obs):
+            obs[obs != 0] = 0
+            return obs
+
+    env.seed(seed)	
     env.action_space.seed(seed)
     env.observation_space.seed(seed)
     return env
 
-class CustomWarpFrame(atari_wrappers.WarpFrame):
-    def observation(self, obs):
-        obs = super().observation(obs)
-        obs = np.where(obs == 0, 0, obs)  # Set the background to black
-        return obs
-
 environment = make_env(environmentID, seed)
+
 
 # create the agent's model using one of the selected algorithms
 # note: exploration_fraction=0.9 means that it will explore 90% of the training steps
