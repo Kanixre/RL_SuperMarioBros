@@ -29,6 +29,7 @@ SIMPLE_MOVEMENT_CUSTOM= [
     ['right', 'B'],
     ['right', 'A', 'B'],
     ['left'],
+    ['left', 'A'],
 ]
 
 # actions for more complex movement
