@@ -40,7 +40,6 @@ from stable_baselines3.common import atari_wrappers
 from gym.wrappers import AtariPreprocessing, FrameStack, TransformObservation
 
 
-
 if len(sys.argv)<2 or len(sys.argv)>4:
     print("USAGE: sb-SuperMarioBros2-v1.py (train|test) (DQN|A2C|PPO) [seed_number]")
     exit(0)
@@ -52,10 +51,10 @@ trainMode = True if sys.argv[1] == 'train' else False
 learningAlg = sys.argv[2] 
 seed = random.randint(0,1000) if trainMode else int(sys.argv[3])
 policyFileName = learningAlg+"-"+environmentID+"-seed"+str(seed)+".policy.pkl"
-num_training_steps = 500000 
+num_training_steps = 1000000 
 num_test_episodes = 15
 learning_rate = 0.00083 # Perfect for the training
-gamma = 0.995
+gamma = 0.995 # Try 0.97
 policy_rendering = True
 
 # Things to study and toggle for better results - 2
