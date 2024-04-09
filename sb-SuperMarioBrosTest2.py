@@ -61,11 +61,24 @@ policy_rendering = True
 # create the learning environment
 def make_env(gym_id, seed):
     env = gym_super_mario_bros.make(gym_id)
+    # Movement types determines how mario moves which helps him beat levels better?
+    # env = JoypadSpace(env, SIMPLE_MOVEMENT)
     env = JoypadSpace(env, SIMPLE_MOVEMENT_CUSTOM)
-    env = atari_wrappers.MaxAndSkipEnv(env, 4)
-    env = atari_wrappers.WarpFrame(env) # grayscale the environment
+    env = atari_wrappers.MaxAndSkipEnv(env, skip=3)
+    env = atari_wrappers.WarpFrame(env)
+    
     env = atari_wrappers.NoopResetEnv(env, noop_max=30)
     env = atari_wrappers.ClipRewardEnv(env)
+
+    class ColorWrapper(gym.ObservationWrapper):
+        def _init_(self, env):
+            super(ColorWrapper, self)._init_(env)
+            self.observation_space = gym.spaces.Box(low=0, high=255, shape=(84, 84, 1), dtype=env.observation_space.dtype)
+
+        def observation(self, observation):
+            observation[observation != 0] = 0
+            return observation
+
     env.seed(seed)	
     env.action_space.seed(seed)
     env.observation_space.seed(seed)
@@ -82,7 +95,7 @@ if learningAlg == "DQN":
 elif learningAlg == "A2C":
     model = A2C("CnnPolicy", environment, seed=seed, learning_rate=learning_rate, gamma=gamma, verbose=1)
 elif learningAlg == "PPO":
-    model = PPO("CnnPolicy", environment, seed=seed, learning_rate=learning_rate, gamma=gamma, verbose=1)
+    model = PPO("NatureCnnPolicy", environment, seed=seed, learning_rate=learning_rate, gamma=gamma, verbose=1)
 else:
     print("UNKNOWN learningAlg="+str(learningAlg))
     exit(0)
