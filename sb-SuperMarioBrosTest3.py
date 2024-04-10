@@ -91,7 +91,7 @@ environment = make_env(environmentID, seed)
 # create the agent's model using one of the selected algorithms
 # note: exploration_fraction=0.9 means that it will explore 90% of the training steps
 if learningAlg == "DQN":
-    model = DQN("CnnPolicy", environment, seed=seed, learning_rate=learning_rate, gamma=gamma, buffer_size=5000, exploration_fraction=0.9, verbose=1)
+    model = DQN("CnnPolicy", environment, seed=seed, learning_rate=learning_rate, gamma=gamma, buffer_size=15000, exploration_fraction=0.9, verbose=1)
 elif learningAlg == "A2C":
     model = A2C("CnnPolicy", environment, seed=seed, learning_rate=learning_rate, gamma=gamma, verbose=1)
 elif learningAlg == "PPO":
