@@ -95,7 +95,7 @@ if learningAlg == "DQN":
 elif learningAlg == "A2C":
     model = A2C("CnnPolicy", environment, seed=seed, learning_rate=learning_rate, gamma=gamma, verbose=1)
 elif learningAlg == "PPO":
-    model = PPO("CnnPolicy", environment, seed=seed, learning_rate=learning_rate, gamma=gamma, verbose=1, n_steps=5000)
+    model = PPO("CnnPolicy", environment, seed=seed, learning_rate=learning_rate, gamma=gamma, verbose=1, batch_size=128, n_steps=4096)
 else:
     print("UNKNOWN learningAlg="+str(learningAlg))
     exit(0)
