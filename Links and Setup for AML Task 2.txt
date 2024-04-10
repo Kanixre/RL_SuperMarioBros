@@ -14,6 +14,9 @@ import torch
 torch.cuda.is_available()
 -if 'True', continue
 --
+sudo apt-get update
+sudo apt-get -y install freeglut3-dev
+--
 install dependencies from supermariobros code
 --
 run train and test code
