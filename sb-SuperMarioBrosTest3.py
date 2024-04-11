@@ -54,19 +54,28 @@ policyFileName = learningAlg+"-"+environmentID+"-seed"+str(seed)+".policy.pkl"
 num_training_steps = 500000 
 num_test_episodes = 15
 learning_rate = 0.00083 # Perfect for the training
-gamma = 0.97 
+gamma = 0.995 
 policy_rendering = True
 
 # Things to study and toggle for better results - 2
+
+# actions for very simple movement
+SIMPLE_MOVEMENT_CUSTOM3 = [
+    ['right'],
+    ['right', 'A'],
+    ['right', 'B'],
+    ['right', 'A', 'B'],
+    ['A'],
+    ['left'],
+]
 # create the learning environment
 def make_env(gym_id, seed):
     env = gym_super_mario_bros.make(gym_id)
     # Movement types determines how mario moves which helps him beat levels better?
     # env = JoypadSpace(env, SIMPLE_MOVEMENT)
-    env = JoypadSpace(env, SIMPLE_MOVEMENT_CUSTOM)
+    env = JoypadSpace(env, SIMPLE_MOVEMENT_CUSTOM3)
     env = atari_wrappers.MaxAndSkipEnv(env, skip=3)
     env = atari_wrappers.WarpFrame(env)
-    
     env = atari_wrappers.NoopResetEnv(env, noop_max=30)
     env = atari_wrappers.ClipRewardEnv(env)
 
@@ -91,11 +100,11 @@ environment = make_env(environmentID, seed)
 # create the agent's model using one of the selected algorithms
 # note: exploration_fraction=0.9 means that it will explore 90% of the training steps
 if learningAlg == "DQN":
-    model = DQN("CnnPolicy", environment, seed=seed, learning_rate=learning_rate, gamma=gamma, buffer_size=15000, exploration_fraction=0.9, verbose=1)
+    model = DQN("CnnPolicy", environment, seed=seed, learning_rate=learning_rate, gamma=gamma, buffer_size=30000, exploration_fraction=0.9, verbose=1)
 elif learningAlg == "A2C":
     model = A2C("CnnPolicy", environment, seed=seed, learning_rate=learning_rate, gamma=gamma, verbose=1)
 elif learningAlg == "PPO":
-    model = PPO("CnnPolicy", environment, seed=seed, learning_rate=learning_rate, gamma=gamma, verbose=1, batch_size=256)
+    model = PPO("CnnPolicy", environment, seed=seed, learning_rate=learning_rate, gamma=gamma, verbose=1)
 else:
     print("UNKNOWN learningAlg="+str(learningAlg))
     exit(0)
