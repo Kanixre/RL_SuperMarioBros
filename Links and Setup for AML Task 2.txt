@@ -17,7 +17,14 @@ torch.cuda.is_available()
 sudo apt-get update
 sudo apt-get -y install freeglut3-dev
 --
-install dependencies from supermariobros code
+install dependencies=
+# pip install gym==0.21.0
+# pip install swig
+# pip install box2d-py
+# pip install gymnasium
+# pip install pyglet==1.5.11
+# pip install stable-baselines3[extra]==1.8.0
+# pip install gym-super-mario-bros==7.3.0
 --
 run train and test code
 
