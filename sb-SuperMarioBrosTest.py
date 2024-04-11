@@ -58,12 +58,21 @@ gamma = 0.97
 policy_rendering = True
 
 # Things to study and toggle for better results - 2
+
+SIMPLE_MOVEMENT_CUSTOM1 = [
+    ['right'],
+    ['right', 'A'],
+    ['right', 'B'],
+    ['right', 'A', 'B'],
+    ['left'],
+    ['left', 'A'],
+]
 # create the learning environment
 def make_env(gym_id, seed):
     env = gym_super_mario_bros.make(gym_id)
     # Movement types determines how mario moves which helps him beat levels better?
     # env = JoypadSpace(env, SIMPLE_MOVEMENT)
-    env = JoypadSpace(env, SIMPLE_MOVEMENT_CUSTOM)
+    env = JoypadSpace(env, SIMPLE_MOVEMENT_CUSTOM1)
     env = atari_wrappers.MaxAndSkipEnv(env, skip=3)
     env = atari_wrappers.WarpFrame(env)
     
