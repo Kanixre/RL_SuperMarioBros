@@ -21,18 +21,23 @@
 # Contact: hcuayahuitl@lincoln.ac.uk
 #####################################################
 
+# python sb-SuperMarioBros.py train
+
 import sys
 import gym
 import pickle
 import random
+import numpy as np
 from typing import Callable
 from stable_baselines3 import DQN,A2C,PPO
 from stable_baselines3.common.evaluation import evaluate_policy
 
 import gym_super_mario_bros
 from nes_py.wrappers import JoypadSpace
-from gym_super_mario_bros.actions import SIMPLE_MOVEMENT, COMPLEX_MOVEMENT, RIGHT_ONLY
+from actions_custom import SIMPLE_MOVEMENT_CUSTOM # contains down in SIMPLE_MOVEMENT
+# from gym_super_mario_bros.actions import SIMPLE_MOVEMENT, COMPLEX_MOVEMENT, RIGHT_ONLY
 from stable_baselines3.common import atari_wrappers
+from gym.wrappers import AtariPreprocessing, FrameStack, TransformObservation
 
 
 if len(sys.argv)<2 or len(sys.argv)>4:
@@ -40,32 +45,48 @@ if len(sys.argv)<2 or len(sys.argv)>4:
     exit(0)
 
 environmentID = "SuperMarioBros2-v1"
+
+# Things to study and toggle for better results -1
 trainMode = True if sys.argv[1] == 'train' else False
 learningAlg = sys.argv[2] 
 seed = random.randint(0,1000) if trainMode else int(sys.argv[3])
 policyFileName = learningAlg+"-"+environmentID+"-seed"+str(seed)+".policy.pkl"
-num_training_steps = 500000
-num_test_episodes = 10
-learning_rate = 0.00083
-gamma = 0.995
+num_training_steps = 500000 
+num_test_episodes = 15
+learning_rate = 0.00095 # Perfect for the training
+gamma = 0.995 
 policy_rendering = True
 
+# Things to study and toggle for better results - 2
 
-# custom actions 
-SIMPLE_MOVEMENT_CUSTOM = [
+# actions for very simple movement
+SIMPLE_MOVEMENT_CUSTOM3 = [
     ['right'],
     ['right', 'A'],
     ['right', 'B'],
     ['right', 'A', 'B'],
-    ['left', 'A'],
+    ['A'],
 ]
-# create the learning environment 
+# create the learning environment
 def make_env(gym_id, seed):
     env = gym_super_mario_bros.make(gym_id)
-    env = JoypadSpace(env, RIGHT_ONLY)
-    env = atari_wrappers.MaxAndSkipEnv(env, 4)
+    # Movement types determines how mario moves which helps him beat levels better?
+    # env = JoypadSpace(env, SIMPLE_MOVEMENT)
+    env = JoypadSpace(env, SIMPLE_MOVEMENT_CUSTOM3)
+    env = atari_wrappers.MaxAndSkipEnv(env, skip=3)
+    env = atari_wrappers.WarpFrame(env)
     env = atari_wrappers.NoopResetEnv(env, noop_max=30)
     env = atari_wrappers.ClipRewardEnv(env)
+
+    class ColorWrapper(gym.ObservationWrapper):
+        def _init_(self, env):
+            super(ColorWrapper, self)._init_(env)
+            self.observation_space = gym.spaces.Box(low=0, high=255, shape=(84, 84, 1), dtype=env.observation_space.dtype)
+
+        def observation(self, observation):
+            observation[observation != 0] = 0
+            return observation
+
     env.seed(seed)	
     env.action_space.seed(seed)
     env.observation_space.seed(seed)
@@ -73,11 +94,12 @@ def make_env(gym_id, seed):
 
 environment = make_env(environmentID, seed)
 
+
+# Things to study and toggle for better results - 3
 # create the agent's model using one of the selected algorithms
 # note: exploration_fraction=0.9 means that it will explore 90% of the training steps
 if learningAlg == "DQN":
-    model = DQN("CnnPolicy", environment, seed=seed, learning_rate=learning_rate, gamma=gamma, buffer_size=30000,
-                 exploration_fraction=0.9, verbose=1)
+    model = DQN("CnnPolicy", environment, seed=seed, learning_rate=learning_rate, gamma=gamma, buffer_size=35000, exploration_fraction=0.9, verbose=1)
 elif learningAlg == "A2C":
     model = A2C("CnnPolicy", environment, seed=seed, learning_rate=learning_rate, gamma=gamma, verbose=1)
 elif learningAlg == "PPO":
