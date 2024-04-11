@@ -33,3 +33,11 @@ https://stable-baselines3.readthedocs.io/en/master/modules/a2c.html
 
 https://stable-baselines3.readthedocs.io/en/master/modules/ppo.html
 
+
+https://github.com/search?q=supermariobros+reinforcement+learning&type=repositories
+
+https://github.com/yumouwei/super-mario-bros-reinforcement-learning
+
+https://github.com/CyberDatta/ai_controlled_mario
+
+https://github.com/Talendar/super_mario_dqn/blob/master/main.py
