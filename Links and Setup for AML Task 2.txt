@@ -1,6 +1,8 @@
 Links and Commands for AML Task 2
 -----
 
+python sb-SuperMarioBrosTest.py train
+
 Commands for Ubuntu
 =
 --
