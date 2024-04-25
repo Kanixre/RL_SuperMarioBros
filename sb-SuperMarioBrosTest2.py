@@ -23,6 +23,7 @@
 
 # python sb-SuperMarioBros.py train
 
+import os
 import sys
 import gym
 import pickle
