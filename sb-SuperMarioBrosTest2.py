@@ -31,7 +31,7 @@ import numpy as np
 from typing import Callable
 from stable_baselines3 import DQN,A2C,PPO
 from stable_baselines3.common.evaluation import evaluate_policy
-
+from stable_baselines3.common.monitor import Monitor
 import gym_super_mario_bros
 from nes_py.wrappers import JoypadSpace
 from actions_custom import SIMPLE_MOVEMENT_CUSTOM # custom movement for better results
@@ -51,35 +51,25 @@ trainMode = True if sys.argv[1] == 'train' else False
 learningAlg = sys.argv[2] 
 seed = random.randint(0,1000) if trainMode else int(sys.argv[3])
 policyFileName = learningAlg+"-"+environmentID+"-seed"+str(seed)+".policy.pkl"
-num_training_steps = 750000 
+num_training_steps = 1000000
 num_test_episodes = 15
-learning_rate = 0.00083 # Perfect for the training
-gamma = 0.995
+learning_rate = 0.0003 # Perfect for the training
+gamma = 0.97
 policy_rendering = True
 
-# Things to study and toggle for better results - 2
+script_dir = os.path.dirname(os.path.abspath(__file__))
+log_dir = script_dir
 
-# custom actions 
-SIMPLE_MOVEMENT_CUSTOM2 = [
-    ['right'],
-    ['right', 'A'],
-    ['right', 'B'],
-    ['right', 'A', 'B'],
-    ['left'],
-    ['left', 'A'],
-]
 # create the learning environment
 def make_env(gym_id, seed):
     env = gym_super_mario_bros.make(gym_id)
-    # Movement types determines how mario moves which helps him beat levels better?
-    # env = JoypadSpace(env, SIMPLE_MOVEMENT)
-    env = JoypadSpace(env, SIMPLE_MOVEMENT_CUSTOM2)
+    env = JoypadSpace(env, SIMPLE_MOVEMENT_CUSTOM)
     env = atari_wrappers.MaxAndSkipEnv(env, skip=3)
     env = atari_wrappers.WarpFrame(env)
-    
     env = atari_wrappers.NoopResetEnv(env, noop_max=30)
     env = atari_wrappers.ClipRewardEnv(env)
-
+    env = Monitor(env, log_dir)
+    
     class ColorWrapper(gym.ObservationWrapper):
         def _init_(self, env):
             super(ColorWrapper, self)._init_(env)
@@ -96,16 +86,12 @@ def make_env(gym_id, seed):
 
 environment = make_env(environmentID, seed)
 
-
-# Things to study and toggle for better results - 3
-# create the agent's model using one of the selected algorithms
-# note: exploration_fraction=0.9 means that it will explore 90% of the training steps
 if learningAlg == "DQN":
-    model = DQN("CnnPolicy", environment, seed=seed, learning_rate=learning_rate, gamma=gamma, buffer_size=5000, exploration_fraction=0.9, verbose=1)
+    model = DQN("CnnPolicy", environment, seed=seed, learning_rate=learning_rate, gamma=gamma, buffer_size=30000, exploration_fraction=0.9, verbose=1)
 elif learningAlg == "A2C":
     model = A2C("CnnPolicy", environment, seed=seed, learning_rate=learning_rate, gamma=gamma, verbose=1)
 elif learningAlg == "PPO":
-    model = PPO("CnnPolicy", environment, seed=seed, learning_rate=learning_rate, gamma=gamma, verbose=1, batch_size=128, n_steps=6144)
+    model = PPO("CnnPolicy", environment, seed=seed, learning_rate=learning_rate, gamma=gamma, verbose=1, batch_size=128, n_steps=4096)
 else:
     print("UNKNOWN learningAlg="+str(learningAlg))
     exit(0)
