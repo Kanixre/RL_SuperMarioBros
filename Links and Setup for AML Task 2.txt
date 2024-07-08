@@ -3,6 +3,11 @@ Links and Commands for AML Task 2
 
 https://lcas.lincoln.ac.uk/nextcloud/index.php/s/q73JHG6xWwX3Lqf
 
+
+# https://www.cvlibs.net/datasets/kitti/eval_odometry.php
+# https://cvg.cit.tum.de/data/datasets/rgbd-dataset/download
+
+
 python sb-SuperMarioBrosTest.py train
 
 Commands for Ubuntu
