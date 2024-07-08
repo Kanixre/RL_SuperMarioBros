@@ -3,9 +3,38 @@ Links and Commands for AML Task 2
 
 https://lcas.lincoln.ac.uk/nextcloud/index.php/s/q73JHG6xWwX3Lqf
 
+# Install ROS
+# http://wiki.ros.org/noetic/Installation/Ubuntu
+sudo apt install ros-noetic-desktop-full
 
+git clone https://github.com/lturing/ORB_SLAM3_ROS.git
+cd ORB_SLAM3_ROS
+chmod +x ./build.sh 
+./build.sh 
+
+# Download datasets
 # https://www.cvlibs.net/datasets/kitti/eval_odometry.php
 # https://cvg.cit.tum.de/data/datasets/rgbd-dataset/download
+
+# Generate associate.txt (example)
+python evaluation/associate.py /home/spurs/dataset/rgbd_dataset_freiburg2_large_with_loop/rgb.txt /home/spurs/dataset/rgbd_dataset_freiburg2_large_with_loop/depth.txt >> associate.txt
+
+# Run monocular
+# Modify launch/orb_slam_mono.launch as needed
+chmod +x ./run_mono.sh
+./run_mono.sh 
+
+# Run stereo
+# Modify launch/orb_slam_stereo.launch as needed
+chmod +x ./run_stereo.sh 
+./run_stereo.sh 
+
+# Run RGB-D dense mapping
+# Modify launch/orb_slam_rgbd_mapping.launch as needed
+chmod +x ./run_rgbd_mapping.sh 
+./run_rgbd_mapping.sh 
+
+
 
 
 python sb-SuperMarioBrosTest.py train
