@@ -34,6 +34,35 @@ chmod +x ./run_stereo.sh
 chmod +x ./run_rgbd_mapping.sh 
 ./run_rgbd_mapping.sh 
 
+header:
+frame_id: "front_left_camera_optical_frame"
+ 
+height: 1080
+width: 1920
+ 
+distortion_model: "plumb_bob"
+ 
+D: [0.0, 0.0, 0.0, 0.0, 0.0]
+ 
+K: [1057.0008544921875,       0.0,                952.2301635742188,
+     0.0,                  1057.0008544921875,      553.5770263671875,     
+     0.0,                                      0.0,                                           1.0]
+ 
+R: [1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0]
+ 
+P: [1057.0008544921875,       0.0,                952.2301635742188,
+      0.0,                                     0.0,              1057.0008544921875,
+      553.5770263671875,         0.0,                                            0.0,
+      0.0,                                     1.0,                                           0.0]
+ 
+binning_x: 0
+binning_y: 0
+roi:
+x_offset: 0
+y_offset: 0
+height: 0
+width: 0
+do_rectify: False1920
 
 
 
