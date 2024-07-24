@@ -65,7 +65,10 @@ width: 0
 do_rectify: False1920
 
 
+https://arxiv.org/abs/2007.11898
 
+
+---------------------
 python sb-SuperMarioBrosTest.py train
 
 Commands for Ubuntu
