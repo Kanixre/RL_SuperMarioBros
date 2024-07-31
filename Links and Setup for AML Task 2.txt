@@ -1,5 +1,18 @@
 Links and Commands for AML Task 2
 -----
+script used
+python3 evaluate_ate_scale_2.py GPS_TUM_March KeyFrameTrajectory_march.txt --offset 0.1 --scale 1.2 --max_difference 10000000 --save aligned_trajectory.txt --plot trajectory_plot.png --verbose
+
+Results from the March Ground Truth and KeyframeTrajectory using the evaluate_ate_scale code
+compared_pose_pairs 587 pairs
+absolute_translational_error.rmse 13.754493 m
+absolute_translational_error.mean 12.382842 m
+absolute_translational_error.median 12.086141 m
+absolute_translational_error.std 5.987597 m
+absolute_translational_error.min 0.481406 m
+absolute_translational_error.max 26.141416 m
+max idx: 565
+
 
 python script.py ground_truth.txt estimated.txt --offset 0.1 --scale 1.2 --max_difference 10000000 --save aligned_trajectory.txt --plot trajectory_plot.png --verbose
 
