@@ -1,6 +1,9 @@
 Links and Commands for AML Task 2
 -----
 
+python script.py ground_truth.txt estimated.txt --offset 0.1 --scale 1.2 --max_difference 10000000 --save aligned_trajectory.txt --plot trajectory_plot.png --verbose
+
+
 https://lcas.lincoln.ac.uk/nextcloud/index.php/s/q73JHG6xWwX3Lqf
 
 # Install ROS
