@@ -1,6 +1,6 @@
 #!/usr/bin/python
 """
-Converted from python 2 to python 3
+Converted from python 2 to python 3 using ChatGPT
 Key Changes:
 Print Statements: Updated to use Python 3's print function.
 File Handling: Changed to use the with open(...) as file: construct for better file handling.
