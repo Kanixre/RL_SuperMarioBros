@@ -1,4 +1,17 @@
 #!/usr/bin/python
+"""
+Converted from python 2 to python 3
+Key Changes:
+Print Statements: Updated to use Python 3's print function.
+File Handling: Changed to use the with open(...) as file: construct for better file handling.
+List Handling: Converted dictionary keys to lists to allow for element removal during iteration.
+Numpy Import: Updated to use the standard import alias np for numpy.
+Conversion of dict_keys to list: Explicitly convert dict_keys objects to lists using list() to allow the use of the remove method.
+Use of with open(...) as file: Improved file handling by using context managers for reading files.
+Print Statements: Updated to use Python 3's print function with f-strings for better readability and efficiency.
+
+"""
+
 # Software License Agreement (BSD License)
 #
 # Copyright (c) 2013, Juergen Sturm, TUM
