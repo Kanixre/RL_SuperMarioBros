@@ -1,3 +1,11 @@
+# Modified by Offiong Okon
+"""
+Converted from python 2 to python 3 using ChatGPT
+Key Changes:
+Replaced all instances of print statements with Python 3 syntax.
+Ensured the use of the @ operator for matrix multiplication in numpy, which is available in Python 3.
+Used with open(...) as file: for file handling, which ensures files are properly closed after writing.
+"""
 # Modified by Raul Mur-Artal
 # Automatically compute the optimal scale factor for monocular VO/SLAM.
 
