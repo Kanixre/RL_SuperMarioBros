@@ -223,4 +223,4 @@ if __name__ == "__main__":
         ax.set_xlabel('x [m]')
         ax.set_ylabel('y [m]')
         plt.axis('equal')
-        plt.savefig(args.plot, format="pdf")
+        plt.savefig(args.plot, format="png")
